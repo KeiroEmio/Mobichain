@@ -1,0 +1,27 @@
+/* 用于整体布局的CSS */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.top-container {
+    /* Top 组件的样式 */
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    /* 占据剩余空间 */
+}
+
+.sidebar-container {
+    /* Sidebar 组件的样式，如宽度和背景 */
+}
+
+.main-content-container {
+    flex: 1;
+    /* 占据剩余空间 */
+    /* 主内容区域的样式 */
+}

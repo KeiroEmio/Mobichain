@@ -1,0 +1,2129 @@
+﻿{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "PrimeRad2 Api Documentation",
+    "description": "PrimeRad2 Api Documentation",
+    "license": {
+      "name": "Specify your license",
+      "url": "https://yourlicense.com"
+    },
+    "x-logo": {
+      "url": "logo.png",
+      "description": "PrimeRad2 Logo",
+      "altText": "PrimeRad2 Logo",
+      "backgroundColor": "#483D8B"
+    },
+    "contact": {
+      "name": "PrimeRad2 API Support",
+      "url": "https://primerad2.com/info/support",
+      "email": "support@primerad2.com"
+    },
+    "termsOfService": "https://primerad2.com/info/terms_and_conditions"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8060/api",
+      "description": "Api base url"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User Login",
+        "description": "Authenticate user and get user login data",
+        "operationId": "UserLogin",
+        
+        "tags": [
+          "Auth"
+        ],
+        
+        "requestBody": {
+          "description": "User login credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions": {
+      "get": {
+        "summary": "List Permissions",
+        "description": "Permissions",
+        "operationId": "ListPermissions",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Permissions"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter table records by search value",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/SearchQuery"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of records to select. Default 20",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/LimitQuery"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Current page record",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/PageNumberQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPermissions"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions/view/{id}": {
+      "get": {
+        "summary": "View Permissions",
+        "description": "Permissions Details",
+        "operationId": "ViewPermissions",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Permissions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewPermissions"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions/add": {
+      "post": {
+        "summary": "Add Permissions",
+        "description": "Add New Permissions",
+        "operationId": "AddPermissions",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Permissions"
+        ],
+        
+        "requestBody": {
+          "description": "Add Permissions",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPermissions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewPermissions"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions/edit/{id}": {
+      "put": {
+        "summary": "Edit Permissions",
+        "description": "Edit Permissions",
+        "operationId": "EditPermissions",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Permissions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Edit Permissions",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditPermissions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditPermissions"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions/delete/{id}": {
+      "delete": {
+        "summary": "Delete Permissions",
+        "description": "Permissions",
+        "operationId": "DeletePermissions",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Permissions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "List Products",
+        "description": "Products",
+        "operationId": "ListProducts",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter table records by search value",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/SearchQuery"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of records to select. Default 20",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/LimitQuery"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Current page record",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/PageNumberQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProducts"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/view/{id}": {
+      "get": {
+        "summary": "View Products",
+        "description": "Products Details",
+        "operationId": "ViewProducts",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewProducts"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/add": {
+      "post": {
+        "summary": "Add Products",
+        "description": "Add New Products",
+        "operationId": "AddProducts",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        
+        "requestBody": {
+          "description": "Add Products",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProducts"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewProducts"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/edit/{id}": {
+      "put": {
+        "summary": "Edit Products",
+        "description": "Edit Products",
+        "operationId": "EditProducts",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Edit Products",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProducts"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditProducts"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/delete/{id}": {
+      "delete": {
+        "summary": "Delete Products",
+        "description": "Products",
+        "operationId": "DeleteProducts",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "summary": "List Roles",
+        "description": "Roles",
+        "operationId": "ListRoles",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter table records by search value",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/SearchQuery"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of records to select. Default 20",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/LimitQuery"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Current page record",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/PageNumberQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRoles"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/view/{id}": {
+      "get": {
+        "summary": "View Roles",
+        "description": "Roles Details",
+        "operationId": "ViewRoles",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRoles"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/add": {
+      "post": {
+        "summary": "Add Roles",
+        "description": "Add New Roles",
+        "operationId": "AddRoles",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Roles"
+        ],
+        
+        "requestBody": {
+          "description": "Add Roles",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddRoles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRoles"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/edit/{id}": {
+      "put": {
+        "summary": "Edit Roles",
+        "description": "Edit Roles",
+        "operationId": "EditRoles",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Edit Roles",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditRoles"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/delete/{id}": {
+      "delete": {
+        "summary": "Delete Roles",
+        "description": "Roles",
+        "operationId": "DeleteRoles",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List Users",
+        "description": "Users",
+        "operationId": "ListUsers",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter table records by search value",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/SearchQuery"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of records to select. Default 20",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/LimitQuery"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Current page record",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/PageNumberQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListUsers"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/view/{id}": {
+      "get": {
+        "summary": "View Users",
+        "description": "Users Details",
+        "operationId": "ViewUsers",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewUsers"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "User Registration",
+        "description": "Add New Users",
+        "operationId": "UserRegister",
+        
+        "tags": [
+          "Auth"
+        ],
+        
+        "requestBody": {
+          "description": "User Registration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegister"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/edit": {
+      "put": {
+        "summary": "Edit User Account Details",
+        "description": "My Account",
+        "operationId": "AccountEdit",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Account"
+        ],
+        
+        "requestBody": {
+          "description": "Edit User Account Details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEdit"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get": {
+        "summary": "User Account Details",
+        "description": "My Account",
+        "operationId": "Account",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Account"
+        ],
+        
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/add": {
+      "post": {
+        "summary": "Add Users",
+        "description": "Add New Users",
+        "operationId": "AddUsers",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        
+        "requestBody": {
+          "description": "Add Users",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUsers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewUsers"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/edit/{id}": {
+      "put": {
+        "summary": "Edit Users",
+        "description": "Edit Users",
+        "operationId": "EditUsers",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Edit Users",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUsers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditUsers"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/delete/{id}": {
+      "delete": {
+        "summary": "Delete Users",
+        "description": "Users",
+        "operationId": "DeleteUsers",
+        "security": [
+          {
+            "ApiKeyBearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Select record by ID",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/components/schemas/RecordID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unable to complete request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthenticated request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnAuthenticated"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ListPermissions": {
+        "type": "object",
+        "properties": {
+          "permission_id": {
+            "description": "Permission Id",
+            "type": "string"
+          },
+          "permission": {
+            "description": "Permission",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          }
+        }
+      },
+      "ViewPermissions": {
+        "type": "object",
+        "properties": {
+          "permission_id": {
+            "description": "Permission Id",
+            "type": "string"
+          },
+          "permission": {
+            "description": "Permission",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          }
+        }
+      },
+      "AddPermissions": {
+        "type": "object",
+        "properties": {
+          "permission": {
+            "description": "Permission",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          }
+        }
+      },
+      "EditPermissions": {
+        "type": "object",
+        "properties": {
+          "permission": {
+            "description": "Permission",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          }
+        }
+      },
+      "ListProducts": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Id",
+            "type": "string"
+          },
+          "product_name": {
+            "description": "Product Name",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description",
+            "type": "string"
+          },
+          "cost_price": {
+            "description": "Cost Price",
+            "type": "string"
+          },
+          "selling_price": {
+            "description": "Selling Price",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "Quantity",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category",
+            "type": "string"
+          },
+          "photos": {
+            "description": "Photos",
+            "type": "string"
+          },
+          "status": {
+            "description": "Status",
+            "type": "string"
+          },
+          "date_created": {
+            "description": "Date Created",
+            "type": "string"
+          },
+          "date_updated": {
+            "description": "Date Updated",
+            "type": "string"
+          }
+        }
+      },
+      "ViewProducts": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Id",
+            "type": "string"
+          },
+          "product_name": {
+            "description": "Product Name",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description",
+            "type": "string"
+          },
+          "cost_price": {
+            "description": "Cost Price",
+            "type": "string"
+          },
+          "selling_price": {
+            "description": "Selling Price",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "Quantity",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category",
+            "type": "string"
+          },
+          "photos": {
+            "description": "Photos",
+            "type": "string"
+          },
+          "status": {
+            "description": "Status",
+            "type": "string"
+          },
+          "date_created": {
+            "description": "Date Created",
+            "type": "string"
+          },
+          "date_updated": {
+            "description": "Date Updated",
+            "type": "string"
+          }
+        }
+      },
+      "AddProducts": {
+        "type": "object",
+        "properties": {
+          "product_name": {
+            "description": "Product Name",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description",
+            "type": "string"
+          },
+          "cost_price": {
+            "description": "Cost Price",
+            "type": "string"
+          },
+          "selling_price": {
+            "description": "Selling Price",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "Quantity",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category",
+            "type": "string"
+          },
+          "photos": {
+            "description": "Photos",
+            "type": "string"
+          },
+          "status": {
+            "description": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "EditProducts": {
+        "type": "object",
+        "properties": {
+          "product_name": {
+            "description": "Product Name",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description",
+            "type": "string"
+          },
+          "cost_price": {
+            "description": "Cost Price",
+            "type": "string"
+          },
+          "selling_price": {
+            "description": "Selling Price",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "Quantity",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category",
+            "type": "string"
+          },
+          "photos": {
+            "description": "Photos",
+            "type": "string"
+          },
+          "status": {
+            "description": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "ListRoles": {
+        "type": "object",
+        "properties": {
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          },
+          "role_name": {
+            "description": "Role Name",
+            "type": "string"
+          }
+        }
+      },
+      "ViewRoles": {
+        "type": "object",
+        "properties": {
+          "role_id": {
+            "description": "Role Id",
+            "type": "string"
+          },
+          "role_name": {
+            "description": "Role Name",
+            "type": "string"
+          }
+        }
+      },
+      "AddRoles": {
+        "type": "object",
+        "properties": {
+          "role_name": {
+            "description": "Role Name",
+            "type": "string"
+          }
+        }
+      },
+      "EditRoles": {
+        "type": "object",
+        "properties": {
+          "role_name": {
+            "description": "Role Name",
+            "type": "string"
+          }
+        }
+      },
+      "ListUsers": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "description": "User Id",
+            "type": "string"
+          },
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email",
+            "type": "string"
+          },
+          "photo": {
+            "description": "Photo",
+            "type": "string"
+          },
+          "user_role_id": {
+            "description": "User Role Id",
+            "type": "string"
+          },
+          "account_status": {
+            "description": "Account Status",
+            "type": "string"
+          },
+          "email_verified_at": {
+            "description": "Email Verified At",
+            "type": "string"
+          }
+        }
+      },
+      "ViewUsers": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "description": "User Id",
+            "type": "string"
+          },
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email",
+            "type": "string"
+          },
+          "photo": {
+            "description": "Photo",
+            "type": "string"
+          },
+          "user_role_id": {
+            "description": "User Role Id",
+            "type": "string"
+          },
+          "account_status": {
+            "description": "Account Status",
+            "type": "string"
+          },
+          "email_verified_at": {
+            "description": "Email Verified At",
+            "type": "string"
+          }
+        }
+      },
+      "UserRegister": {
+        "type": "object",
+        "properties": {
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email",
+            "type": "string"
+          },
+          "password": {
+            "description": "Password",
+            "type": "string"
+          },
+          "confirm_password": {
+            "description": "Confirm Password",
+            "type": "string"
+          }
+        }
+      },
+      "AccountEdit": {
+        "type": "object",
+        "properties": {
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "photo": {
+            "description": "Photo",
+            "type": "string"
+          },
+          "user_role_id": {
+            "description": "User Role Id",
+            "type": "string"
+          },
+          "account_status": {
+            "description": "Account Status",
+            "type": "string"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "description": "User Id",
+            "type": "string"
+          },
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email",
+            "type": "string"
+          },
+          "photo": {
+            "description": "Photo",
+            "type": "string"
+          },
+          "user_role_id": {
+            "description": "User Role Id",
+            "type": "string"
+          },
+          "account_status": {
+            "description": "Account Status",
+            "type": "string"
+          },
+          "email_verified_at": {
+            "description": "Email Verified At",
+            "type": "string"
+          }
+        }
+      },
+      "AddUsers": {
+        "type": "object",
+        "properties": {
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email",
+            "type": "string"
+          },
+          "password": {
+            "description": "Password",
+            "type": "string"
+          },
+          "confirm_password": {
+            "description": "Confirm Password",
+            "type": "string"
+          }
+        }
+      },
+      "EditUsers": {
+        "type": "object",
+        "properties": {
+          "user_name": {
+            "description": "User Name",
+            "type": "string"
+          },
+          "photo": {
+            "description": "Photo",
+            "type": "string"
+          },
+          "user_role_id": {
+            "description": "User Role Id",
+            "type": "string"
+          },
+          "account_status": {
+            "description": "Account Status",
+            "type": "string"
+          }
+        }
+      },
+      "SearchQuery": {
+        "type": "string",
+        "properties": {
+          "search": {
+            "description": "Search value",
+            "type": "string"
+          }
+        }
+      },
+      "OrderByQuery": {
+        "type": "string",
+        "properties": {
+          "orderby": {
+            "description": "Sort field name",
+            "type": "string"
+          }
+        }
+      },
+      "OrderTypeQuery": {
+        "type": "string",
+        "properties": {
+          "ordertype": {
+            "description": "Sort type",
+            "type": "string"
+          }
+        }
+      },
+      "LimitQuery": {
+        "type": "string",
+        "properties": {
+          "limit": {
+            "description": "Maximum number of records to select",
+            "type": "integer"
+          }
+        }
+      },
+      "PageNumberQuery": {
+        "type": "string",
+        "properties": {
+          "pagenumber": {
+            "description": "Current page number",
+            "type": "integer"
+          }
+        }
+      },
+      "RecordID": {
+        "type": "string",
+        "properties": {
+          "id": {
+            "description": "Record ID",
+            "type": "string"
+          }
+        }
+      },
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "description": "Username or Email",
+            "type": "string"
+          },
+          "password": {
+            "description": "User Password",
+            "type": "string"
+          }
+        }
+      },
+      "LoginData": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "User json web token(jwt)",
+            "type": "string"
+          },
+          "user": {
+            "description": "User Data",
+            "type": "object"
+          }
+        }
+      },
+      "UnAuthenticated": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "401",
+            "type": "integer"
+          },
+          "message": {
+            "description": "UnAuthenticated",
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Http Status Code",
+            "type": "integer"
+          },
+          "message": {
+            "description": "Unable to complete request",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

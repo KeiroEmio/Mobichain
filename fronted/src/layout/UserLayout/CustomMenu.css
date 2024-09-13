@@ -1,0 +1,62 @@
+/* 自定义菜单样式 */
+.custom-menu {
+    display: flex;
+    justify-content: space-evenly;
+    /* 平均分配空间 */
+    align-items: center;
+    font-size: 18px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    /* 渐变背景 */
+    padding: 10px 20px;
+    /* 内边距 */
+    border-radius: 10px;
+    /* 圆角 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* 阴影 */
+}
+
+.custom-menu a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+.custom-menu a:hover {
+    color: #ff7e5f;
+    /* 悬停时的颜色 */
+}
+
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* 阴影 */
+}
+
+.custom-breadcrumb {
+    padding: 10px 20px;
+    background-color: #f0f2f5;
+    /* 浅灰色背景 */
+    border-radius: 5px;
+    /* 圆角边框 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* 轻微阴影效果 */
+    font-family: 'Arial', sans-serif;
+    /* 字体样式 */
+}
+
+.custom-breadcrumb a {
+    color: #1890ff;
+    /* 蓝色链接 */
+    font-weight: 500;
+    /* 字体加粗 */
+}
+
+.custom-breadcrumb .ant-breadcrumb-separator {
+    color: #cccccc;
+    /* 分隔符颜色 */
+}

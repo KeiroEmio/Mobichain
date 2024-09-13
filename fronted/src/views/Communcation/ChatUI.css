@@ -1,0 +1,451 @@
+/* 整体布局 */
+.chat-ui {
+    display: flex;
+    height: 100vh;
+    /* 确保高度填满视窗 */
+    background-color: #f2f2f2;
+    /* 背景颜色 */
+    box-sizing: border-box;
+    /* 确保边框和内边距不影响布局 */
+}
+
+/* 用户列表样式 */
+.user-list {
+    width: 25%;
+    /* 用户列表占用25%的宽度 */
+    overflow-y: auto;
+    /* 启用滚动 */
+    padding: 20px;
+    /* 添加内边距 */
+    background-color: #fafafa;
+    /* 用户列表背景 */
+    border-right: 1px solid #ccc;
+    /* 分割线 */
+    overflow: visible;
+}
+
+/* 用户卡片样式 */
+.user {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    /* 圆角 */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    /* 悬停时背景色过渡效果 */
+    overflow: visible;
+}
+
+.user.active {
+    background-color: #d0e0d8;
+    /* 选中时的背景色 */
+}
+
+.user:hover {
+    background-color: #e2e2e2;
+    /* 悬停时的背景色 */
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* 圆形头像 */
+    margin-right: 15px;
+    /* 头像和用户名之间的间距 */
+}
+
+.name {
+    font-weight: bold;
+    color: #333;
+}
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* 或根据您的页面布局调整 */
+    width: 100%;
+}
+
+.message-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* 允许滚动 */
+    padding: 20px;
+    /* 维持四周20px的内边距 */
+    margin-bottom: 80px;
+    /* 增加底部外边距，根据需要调整 */
+}
+
+/* 消息通用样式 */
+.message {
+    max-width: 60%;
+    /* 消息最大宽度 */
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* 输入框样式 */
+.chat-input {
+    position: fixed;
+    /* 固定位置 */
+    bottom: 0;
+    right: 0;
+    left: 25%;
+    /* 与用户列表对齐 */
+    background-color: #fff;
+    /* 输入框背景 */
+    padding: 15px;
+    /* 输入框内边距 */
+    border-top: 1px solid #ccc;
+    /* 上边框 */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* 对齐输入框和按钮 */
+}
+
+/* 输入框内部的文本输入和按钮样式 */
+.chat-input input {
+    flex-grow: 1;
+    /* 输入框占据大部分空间 */
+    border: 1px solid #ccc;
+    /* 边框 */
+    border-radius: 5px;
+    /* 圆角 */
+    padding: 10px;
+    /* 输入框内边距 */
+    margin-right: 10px;
+    /* 输入框和按钮之间的间距 */
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    /* 按钮内边距 */
+    background-color: #007bff;
+    /* 按钮背景色 */
+    color: #fff;
+    /* 按钮文字颜色 */
+    border: none;
+    /* 无边框 */
+    border-radius: 5px;
+    /* 按钮圆角 */
+    cursor: pointer;
+    /* 鼠标悬停时显示手形 */
+}
+
+.chat-input button:hover {
+    background-color: #0056b3;
+    /* 悬停时的按钮背景色 */
+}
+
+/* 个人消息样式 */
+.message.my-message {
+    margin-left: auto;
+    background-color: #dcf8c6;
+    /* 淡绿色背景，表示自己的消息 */
+}
+
+/* 其他人消息样式 */
+.message.other-message {
+    margin-right: auto;
+    background-color: #fff;
+    /* 白色背景，表示他人的消息 */
+}
+
+.settings-icon {
+    position: absolute;
+    bottom: 20px;
+    /* or however far from the bottom you want it */
+    left: 20px;
+    /* or however far from the left you want it */
+    cursor: pointer;
+    font-size: 24px;
+    /* icon size */
+}
+
+.settings-menu {
+    position: absolute;
+    bottom: 60px;
+    /* Adjust based on the actual size of your icon */
+    left: 20px;
+    /* Align with the settings icon */
+    list-style: none;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    display: none;
+    /* initially hidden */
+}
+
+.settings-menu li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.settings-menu li:hover {
+    background-color: #f2f2f2;
+}
+
+/* Show the settings menu when the settings icon is clicked */
+.chat-ui .settings-icon+.settings-menu {
+    display: block;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* 半透明遮罩 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-box {
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    /* 限制最大宽度 */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dialog-icon {
+    margin-right: 10px;
+    color: #007bff;
+    /* Bootstrap primary color */
+    font-size: 24px;
+}
+
+.dialog-title {
+    flex-grow: 1;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dialog-close {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.dialog-content p {
+    margin-bottom: 10px;
+}
+
+.dialog-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.dialog-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.dialog-button:hover {
+    background-color: #0056b3;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.notify-dialog-box {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.notify-dialog-header {
+    background: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notify-dialog-title {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.notify-dialog-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.notify-dialog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notify-dialog-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notify-dialog-avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.notify-dialog-info {
+    flex-grow: 1;
+}
+
+.notify-dialog-name {
+    display: block;
+    font-weight: bold;
+}
+
+.notify-dialog-status {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.notify-dialog-action {
+    background: #5cb85c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.notify-dialog-action:nth-of-type(2) {
+    background: #d9534f;
+}
+
+.notify-dialog-action:hover {
+    opacity: 0.9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content button {
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+/* 用户列表项样式 */
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    /* 可以根据你的设计调整 */
+}
+
+/* 下拉按钮样式 */
+.dropbtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 2px;
+    /* 设置与容器的右边距为2px */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* 当下拉内容需要显示时 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 更好看的下拉菜单项样式 */
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    border: none;
+    background: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dropdown-content button:hover {
+    background-color: #f1f1f1;
+}

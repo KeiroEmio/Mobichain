@@ -1,0 +1,61 @@
+/* LoginPage.css */
+.login-page {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../../asserts//beij.webp');
+    /* 确保路径正确 */
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+}
+
+.login-modal {
+    width: 300px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    /* 调整透明度使背景轻微可见 */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    /* 添加模糊效果 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 边框美化 */
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: #ff6b6b;
+    text-align: center;
+    margin-top: 10px;
+}

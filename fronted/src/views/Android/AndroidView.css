@@ -1,0 +1,125 @@
+.android-view-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.android-view-container h1 {
+    text-align: center;
+    color: #333;
+}
+
+.android-view-container p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #666;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.scrollable-content {
+    overflow-y: auto;
+    /* 允许在Y轴方向滚动 */
+    scrollbar-width: none;
+    /* 针对Firefox隐藏滚动条 */
+    -ms-overflow-style: none;
+    /* 针对IE和Edge隐藏滚动条 */
+}
+
+/* 针对Chrome, Safari, Opera隐藏滚动条 */
+.scrollable-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* View.js */
+.android-view {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    /* 左右分区 */
+    gap: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+.left-pane {
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.carousel-slide {
+    text-align: center;
+}
+
+.carousel-slide img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.right-pane {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.details {
+    margin-top: 20px;
+}
+
+.price {
+    font-size: 1.5em;
+    color: #ff4d4f;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.contact-seller {
+    margin-top: 20px;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+.button-container button {
+    margin-right: 10px;
+}
+
+.no-data {
+    text-align: center;
+    color: red;
+    font-size: 1.2em;
+    padding: 20px;
+}
+
+.ant-modal {
+    border-radius: 10px;
+}
