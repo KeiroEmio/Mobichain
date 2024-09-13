@@ -56,6 +56,7 @@ Ensure you have Node.js and npm installed on your system to follow through with 
 1.用户和用户点对点发送消息 参考技术 ---- xmpl(去中心化的网络) 绑定钱包唯一地址进行信息传输，基于 xmpl 网络下的
 
 2.登录方面： 可使用 web3auth 进行用户登录，不仅可以进行钱包登录也可以使用 web2 的一些邮箱登录(相当于在 metamask 之类的钱包上加了一层 web2 的登录，最终还是通过 web2 账户再次创建一个钱包而已)，如：谷歌、qq 邮箱等等，也是基于 web3auth 网络上的；
+![1](./images/1.png)
 
 3.用户支付方面：基于不同链的，比如 eth、solana、ton 的链进行支付，从而达到一种全链的支付系统 参考技术 ---- layer zero
 
