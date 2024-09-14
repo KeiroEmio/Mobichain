@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		body {
+			font-family: "Courier New", Courier, monospace;
+			font-size: 13px;
+		}
+
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0px;
+			padding: 0px;
+
+		}
+
+		small {
+			font-size: small;
+			color: #888;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		.text-grey {
+			color: #777;
+		}
+
+		.bold {
+			font-weight: bold;
+		}
+
+		#report-header {
+			position: relative;
+			border-top: 5px solid darkblue;
+			border-bottom: 5px solid darkblue;
+			color: darkblue;
+			font-weight: bold;
+			padding: 10px;
+		}
+
+		#report-header .sub-title {
+			color: #888;
+		}
+
+		#report-header img {
+			height: 50px;
+			width: 50px;
+		}
+
+		#report-title {
+			padding: 10px 0;
+		}
+
+		#report-body {
+			padding: 0 20px;
+			padding-bottom: 0;
+			min-height: 300px;
+		}
+
+		#report-footer {
+			padding: 20px;
+			background: #fafafa;
+			border-top: 2px solid darkblue;
+			margin: 0 auto;
+		}
+
+		#report-footer table {
+			margin: 0;
+			overflow: hidden;
+		}
+
+		table,
+		.table {
+			width: 100%;
+			max-width: 100%;
+			margin-bottom: 1rem;
+			border-collapse: collapse;
+		}
+
+		.table th,
+		.table td {
+			padding: 0.75rem;
+			vertical-align: top;
+			border-top: 1px solid #ccc;
+			text-align: left;
+		}
+
+		.table thead th {
+			vertical-align: bottom;
+			border-bottom: 2px solid #ccc;
+		}
+
+		.table tbody+tbody {
+			border-top: 2px solid #ccc;
+		}
+
+		.table-sm th,
+		.table-sm td {
+			padding: 0.3rem;
+		}
+
+		.table-bordered {
+			border: 1px solid #eee;
+		}
+
+		.table-bordered th,
+		.table-bordered td {
+			border: 1px solid #eceeef;
+		}
+
+		.table-bordered thead th,
+		.table-bordered thead td {
+			border-bottom-width: 2px;
+		}
+
+		.table-striped tbody tr:nth-of-type(odd) {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+
+		.no-border {
+			border: none !important;
+		}
+
+		.grid {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="report-header">
+		<div class="grid">
+			<div>
+				<img src="<%= config.app.frontendUrl %>/images/logo.png" />
+			</div>
+			<div class="text-center bold">
+				<h2>
+					<%= config.app.name %>
+				</h2>
+				<div class="sub-title">App Slogan</div>
+			</div>
+			<div>
+				<div class="sub-title">+2335400000000</div>
+				<div class="sub-title">
+					<%= config.app.name %>@gmail.com
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="report-body">
+		<%- include("../reports/" + page ); %>
+	</div>
+
+	<div id="report-footer">
+		<div class="text-grey text-center">
+			&copy; <%= new Date().getFullYear() %> <%= config.app.name %>. All Rights Reserved
+		</div>
+	</div>
+</body>
+
+</html>

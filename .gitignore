@@ -26,4 +26,4 @@ go.work.sum
 
 # node_moudule
 frontend/node_modules
-sencondhandproject/node_modules
+backend/nodejs-express-api/node_modules

@@ -299,7 +299,7 @@ async function sendToBlockchain(data) {
             data.transactionAmount,
             Math.floor(transactionTime.getTime() / 1000)
         ).encodeABI(),
-        gas: 2000000,
+        gas: 500000,
         maxPriorityFeePerGas: web3.utils.toWei('2', 'wei'),
         maxFeePerGas: web3.utils.toWei((parseInt(baseFeePerGas) * 2).toString(), 'wei'),
         chainId: await web3.eth.getChainId()

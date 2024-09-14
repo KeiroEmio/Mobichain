@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+    <style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 100%;
+			font-family: 'Avenir Next', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+			line-height: 1.65;
+		}
+		body{
+			background: #efefef;
+			-webkit-font-smoothing: antialiased;
+			-webkit-text-size-adjust: none;
+		}
+		.container {
+			margin: 20px auto;
+			max-width: 580px !important;
+		}
+		.container .masthead {
+			padding: 20px 0;
+			background: #2c3e50;
+			color: white;
+			text-align: center;
+		}
+		.container .content {
+			background: white;
+			padding: 30px 35px;
+		}
+		.container .content .message{
+			margin-top: 15px;
+			margin-bottom: 15px;
+			padding: 15px;
+			background:#eee;
+		}
+    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="masthead">
+			<h1>OTP Verification</h1>
+		</div>
+		<div class="content">
+			<h2>Hello,</h2>
+			<div>Welcome to <strong><%= config.app.name %></strong></div>
+			<h4 class="message"><%= message %></h4>
+			<div>Thank you for connecting with us.</div>
+			<div>Best Regards</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -116,7 +116,69 @@ router.post('/register', [
 });
 
 
+// router.post('/register', [
+// 	body('password').not().isEmpty(),
+// 	body('confirm_password', 'Passwords do not match').custom((value, { req }) => value === req.body.password),
+// 	body('email').not().isEmpty().isEmail(),
+// ], validateFormData, async function (req, res) {
+// 	try {
+// 		console.log('req:', req.body)
+// 		let modeldata = req.getValidFormData();
+// 		modeldata.user_role_id = 2;
+// 		modeldata.password = utils.passwordHash(modeldata.password);
+// 		modeldata.email_verified_at = new Date();  // 添加当前时间为email验证时间
+// 		modeldata.token = 0
 
+// 		// 检查邮箱是否已存在
+// 		let emailCount = await DB.User.count({ where: { 'email': modeldata.email } });
+// 		if (emailCount > 0) {
+// 			return res.badRequest(`${modeldata.email} already exist.`);
+// 		}
+
+// 		// 这里，你需要有一个发起交易的账户地址和私钥
+// 		const account = web3.eth.accounts.privateKeyToAccount(process.env.GANACHE_PRIVATE);
+// 		const gasPrice = await web3.eth.getGasPrice();
+// 		const data = registrationContract.methods.register(modeldata.email, modeldata.password).encodeABI();
+
+// 		console.log('gasPrice:', gasPrice)
+// 		const tx = {
+// 			from: account.address,
+// 			to: contractAddress,
+// 			gas: 5000000,
+// 			gasPrice: gasPrice,
+// 			data: data,
+// 		};
+
+// 		const signedTx = await account.signTransaction(tx);
+// 		const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+// 		// 获取事件日志中的地址数据
+// 		let newUserAddress = '';
+// 		if (txReceipt.logs.length > 0) {
+// 			const event = txReceipt.logs.find(log => log.topics[0] === web3.utils.sha3('UserRegistered(address,string)'));
+// 			if (event) {
+// 				newUserAddress = web3.eth.abi.decodeParameter('address', event.topics[1]);
+// 			}
+// 		}
+
+// 		if (!newUserAddress) {
+// 			throw new Error('UserRegistered event not found or could not decode address.');
+// 		}
+
+// 		modeldata.address = newUserAddress;
+
+// 		// 使用返回的地址创建用户记录
+// 		const record = await DB.User.create(modeldata);
+// 		const user = record;
+// 		const recid = record['id'];
+
+// 		let loginData = await getUserLoginData(user);
+// 		return res.ok(loginData);
+// 	}
+// 	catch (err) {
+// 		return res.serverError(err);
+// 	}
+// });
 
 
 

@@ -1,0 +1,9 @@
+export const AccountVerified = "Verified";
+export const AccountNotVerified = "Not Verified";
+export const AccountActive = "Active";
+export const AccountPending = "Pending";
+export const RecordNotFound = "Record not found";
+export const BadRequest = "Bad Request";
+export const AccessForbbiden = "Access Forbidden";
+export const UnauthorizedAccess = "Unauthorized Access";
+export const ServerError = "Error processing requesting...";
