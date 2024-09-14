@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import Web3 from 'web3';
 import dotenv from "dotenv";
-import TransactionAbi from '../../../src/abi/TransactionAbi.json'  assert { type: 'json' };
-import deployedAddresses from '../../../src/deployedAddresses.json'  assert { type: 'json' };
+import TransactionAbi from '../../../hardhat/abi/TransactionAbi.json'  assert { type: 'json' };
+import deployedAddresses from '../../../hardhat/deployedAddresses.json'  assert { type: 'json' };
 dotenv.config();
 
 const router = Router();

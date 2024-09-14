@@ -6,8 +6,8 @@ import AndroidTransaction from '../models/android_transactions.js';
 import IphoneTransaction from '../models/iphone_transactions.js';
 import { sequelize } from '../models/basemodel.js';
 import DB from '../models/db.js'
-import TransactionAbi from '../../../src/abi/TransactionAbi.json'  assert { type: 'json' };
-import deployedAddresses from '../../../src/deployedAddresses.json'  assert { type: 'json' };
+import TransactionAbi from '../../../hardhat/abi/TransactionAbi.json'  assert { type: 'json' };
+import deployedAddresses from '../../../hardhat/deployedAddresses.json'  assert { type: 'json' };
 import dotenv from "dotenv";
 import Web3 from 'web3';
 import { ethers } from 'ethers';
