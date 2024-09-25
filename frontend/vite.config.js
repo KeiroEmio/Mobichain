@@ -6,13 +6,17 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   build: {
+    // outDir: 'dist', // 输出目录
+    // sourcemap: true, // 生成Source Map
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'public/index.html'),
-        // nested: resolve(__dirname, 'nested/index.html')
+        // main: resolve(__dirname, 'public/index.html'),
+        main: resolve(__dirname,'src/index.jsx'),
+        nested: resolve(__dirname, 'public/index.html')
       }
     }
   },
+  // base: './',
   plugins: [
     react(),
     nodePolyfills({
@@ -23,6 +27,10 @@ export default defineConfig({
       polyfillBuiltinModules: true,
     }),
   ],
+  server: {
+    host: true,
+    port: 3001,
+  },
   resolve: {
     alias: {
       // 别名配置

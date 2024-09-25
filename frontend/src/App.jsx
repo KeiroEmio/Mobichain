@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, createHashRouter,Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './views/Login/LoginPage';
 import RegisterPage from './views/Register/RegisterPage';
 import HomePage from './views/HomePage';
@@ -32,7 +32,7 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <BrowserRouter>
-      < Routes >
+      <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<PrivateRoute><MainLayout /></PrivateRoute>}>
@@ -69,7 +69,7 @@ function App() {
           <Route path='selling' element={<Selling />} />
           <Route path='blockchain-explorer' element={<BlockchainExplorer />} />
         </Route>
-      </Routes >
+      </Routes>
     </BrowserRouter>
   );
 }
