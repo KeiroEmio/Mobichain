@@ -1,22 +1,14 @@
 // vite.config.mts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import {resolve} from 'path';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   build: {
-    // outDir: 'dist', // 输出目录
-    // sourcemap: true, // 生成Source Map
-    rollupOptions: {
-      input: {
-        // main: resolve(__dirname, 'public/index.html'),
-        main: resolve(__dirname,'src/index.jsx'),
-        nested: resolve(__dirname, 'public/index.html')
-      }
-    }
+    outDir: 'dist',
+    assetsPublicPath: './',
   },
-  // base: './',
+  base: './',
   plugins: [
     react(),
     nodePolyfills({
@@ -33,7 +25,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // 别名配置
+      stream: 'stream-browserify',
       crypto: 'crypto-browserify',
       https: 'https-browserify',
       http: 'stream-http',

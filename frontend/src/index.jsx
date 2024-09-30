@@ -14,12 +14,12 @@ import { Buffer } from 'buffer';
 window.process = process;
 window.Buffer = Buffer;
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
+const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
 
 // 你可以删除 reportWebVitals 或保留这个函数以监测性能
 // 如果你删除了 reportWebVitals 文件，确保也删除以下的函数调用

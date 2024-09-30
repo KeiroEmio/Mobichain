@@ -1,13 +1,13 @@
 import React from 'react';
-import { BrowserRouter, createHashRouter,Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter,Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './views/Login/LoginPage';
 import RegisterPage from './views/Register/RegisterPage';
 import HomePage from './views/HomePage';
 import MainLayout from './layout/MainLayout';
 import AndroidList from './views/Android/List';
 import AndroidView from './views/Android/View';
-import AndroidEdit from './views/Android/Edit';
-import AndroidAdd from './views/Android/Add';
+// import AndroidEdit from './views/Android/Edit';
+// import AndroidAdd from './views/Android/Add';
 import Person from './views/Persion/Person'; // Corrected typo from Persion to Person
 import Transcations from './views/transcations/Transcations';
 import UserList from './views/Users/List';
@@ -46,8 +46,8 @@ function App() {
             <Route path=":fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="index/:fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="view/:pageid" element={<AndroidView />} />
-            <Route path="add" element={<AndroidAdd />} />
-            <Route path="edit/:pageid" element={<AndroidEdit />} />
+            {/*<Route path="add" element={<AndroidAdd />} />*/}
+            {/*<Route path="edit/:pageid" element={<AndroidEdit />} />*/}
           </Route>
           <Route path='blockchain-explorer' element={<BlockchainExplorer />} />
         </Route>
@@ -59,8 +59,8 @@ function App() {
             <Route path=":fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="index/:fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="view/:pageid" element={<AndroidView />} />
-            <Route path="add" element={<AndroidAdd />} />
-            <Route path="edit/:pageid" element={<AndroidEdit />} />
+            {/*<Route path="add" element={<AndroidAdd />} />*/}
+            {/*<Route path="edit/:pageid" element={<AndroidEdit />} />*/}
           </Route>
           <Route path="person" element={<Person />} />
           <Route path="communcation" element={<Communcation />} />
