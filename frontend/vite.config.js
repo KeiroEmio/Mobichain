@@ -7,6 +7,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsPublicPath: './',
+    chunkSizeWarningLimit: 10000,
+    output: {
+      manualChunks(id) {
+        if (id.includes('node_modules')) {
+          return 'vendor'; // 将 node_modules 中的代码打包成 vendor.js
+        }
+      },
+    },
   },
   base: './',
   plugins: [
