@@ -42,7 +42,8 @@
     "react-transition-group": "^4.4.5",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3": "^4.16.0"
   },
   "scripts": {
     "start": "set PORT=3001 && react-scripts start",

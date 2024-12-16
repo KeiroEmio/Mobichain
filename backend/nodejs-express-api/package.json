@@ -36,7 +36,7 @@
 		"passport-local": "^1.0.0",
 		"puppeteer": "^19.7.1",
 		"sequelize": "^6.6.5",
-		"sharp": "^0.26.1",
+		"sharp": "^0.33.5",
 		"socket.io": "^4.7.5",
 		"web3": "^4.7.0",
 		"x-crawl": "^10.0.1"

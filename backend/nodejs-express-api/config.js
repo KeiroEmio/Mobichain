@@ -16,9 +16,9 @@ export default {
 	database: {
 		name:"secondhand",
 		type: "mysql",
-		host: "localhost",
+		host: "127.0.0.1",
 		username: "root",
-		password: "123456",
+		password: "3832414122.qzk",
 		port: "3306",
 		charset: "utf8",
 		recordlimit: 10,

@@ -11,6 +11,7 @@ import RegistrationContractAbi from '../../../hardhat/abi/RegistrationContractAb
 import deployedAddresses from '../../../hardhat/deployedAddresses.json'  assert { type: 'json' };
 import dotenv from "dotenv";
 import Web3 from 'web3';
+import generateUUID from "../helpers/getnonce_uuid.js"
 dotenv.config();
 
 const router = Router();
@@ -18,32 +19,89 @@ const router = Router();
 const web3 = new Web3(process.env.RPC_URL);
 const contractAddress = deployedAddresses.RegistrationContract;
 const registrationContract = new web3.eth.Contract(RegistrationContractAbi, contractAddress);
+let nonceStore = {};  
 /**
  * Route to login user using credential
  * @POST /auth/login
  */
+/**
+ * 用户登录的路由，验证签名是否有效
+ * @POST /auth/login
+ */
 router.post('/login', [
-	body('username').trim().not().isEmpty(),
-	body('password').not().isEmpty(),
-], validateFormData, async (req, res, next) => {
-	try {
-		let { username, password } = req.body;
+    body('publicKey').trim().not().isEmpty(), // 用户的公钥
+    body('signature').not().isEmpty(), // 用户的签名
+],validateFormData, async (req, res, next) => {
+    try {
+        const { publicKey, signature } = req.body;
+		 const nonce = nonceStore[req.ip];
+		 console.log(nonce + " nonce login before")
+		 console.log(publicKey,signature)
+        // 验证签名
+        const isSignatureValid = verifySignature(signature, nonce, publicKey);
+        if (!isSignatureValid) {
+            return res.status(401).json({ message: "Invalid signature" });
+        }
 
-		let user = await DB.User.findOne({ where: { [DB.op.or]: { email: username, email: username } } });
-		if (!user) {
-			return res.unauthorized("Username or password not correct");
-		}
-		if (!utils.passwordVerify(password, user.password)) {
-			return res.unauthorized("Username or password not correct");
-		}
+		console.log("isSignatureValid:",isSignatureValid)
+        // 根据公钥获取用户信息（假设数据库中有用户的公钥）
+		const address = publicKey
+        const user = await DB.User.findOne({ where: { address } });
+        if (!user) {
+            const user = DB.User.create({
+				email: "",
+				password: "",
+				address: address,
+				email_verified_at: now.Date,
+				photo: "",
+				token: 0,
+				user_role_id:2,
+			})
+			return res.status(200).json(user)
+        }
+		// console.log("user:",user)
+        const loginData = await getUserLoginData(user);
+		console.log("loginData:",loginData)
+        return res.status(200).json(loginData);
+    } catch (err) {
+        return res.status(500).json({ message: 'Server error' });
+    }
+});
 
-		let loginData = await getUserLoginData(user);
-		console.log('111', loginData);
-		return res.ok(loginData);
-	}
-	catch (err) {
-		return res.serverError(err);
-	}
+/**
+ * 验证签名
+ * @param {string} signature - 签名字符串
+ * @param {string} nonce - 签名时的数据（原始消息）
+ * @param {string} publicKey - 预期的签名者地址
+ * @returns {boolean} 是否验证成功
+ */
+function verifySignature(signature, nonce, publicKey) {
+    try {
+        // 直接使用 recover 方法恢复签名者的地址
+        const recoveredAddress = web3.eth.accounts.recover(nonce, signature);
+
+        console.log('Recovered Address:', recoveredAddress);
+        console.log('Provided Address:', publicKey);
+
+        // 比较恢复的地址与传入的公钥地址
+        return recoveredAddress.toLowerCase() === publicKey.toLowerCase();
+    } catch (error) {
+        console.error('签名验证失败:', error);
+        return false;
+    }
+}
+
+
+
+// 生成并返回 nonce
+router.post('/nonce', [],[], async (req, res, next) => {
+    try {
+        nonceStore[req.ip] = generateUUID();
+		console.log("nonce:",nonceStore[req.ip])
+        return res.status(200).json([nonceStore[req.ip]]);
+    } catch (err) {
+        return res.status(500).json({ message: 'Server error,'+err });
+    }
 });
 
 

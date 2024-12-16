@@ -18,7 +18,7 @@ router.get(['/', '/index'], async (req, res) => {
 		let allowedRoles = ["admin", "user"];
 		let userRole = req.userRoleName;
 		if (!allowedRoles.includes(userRole)) {
-			where['id'] = req.user.id; //filter only current records
+			where['id'] = req.user.id; 
 		}
 		where['id'] = recid;
 		query.raw = true;
