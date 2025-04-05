@@ -1,9 +1,9 @@
 
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useLocalStore from 'hooks/useLocalStore';
-import useApi from 'hooks/useApi';
-import useUtils from 'hooks/useUtils';
+import useLocalStore from '../Hooks/useLocalStore';
+import useApi from '../Hooks/useApi';
+import useUtils from '../Hooks/useUtils';
 
 const publicPages = ['/', 'index', 'error', ]; //public pages which do not need authentation
 

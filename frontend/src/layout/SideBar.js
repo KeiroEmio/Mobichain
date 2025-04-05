@@ -5,6 +5,7 @@ import {
     SendOutlined,
     AppleOutlined,
     AndroidOutlined,
+    MoneyCollectOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -35,6 +36,9 @@ const SideBar = () => {
                 </Menu.Item>
                 <Menu.Item key="5" icon={<SendOutlined />}>
                     <Link to="/blockchain-explorer">上链查询</Link>
+                </Menu.Item>
+                <Menu.Item key="6" icon={<MoneyCollectOutlined />}>
+                    <Link to="/token">代币管理</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

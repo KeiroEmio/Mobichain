@@ -4,8 +4,13 @@ import utils from '../helpers/utils.js';
 import uploader from '../helpers/uploader.js';
 import Rbac from '../helpers/rbac.js';
 import validateFormData from '../helpers/validate_form.js';
+import generateUUID from '../helpers/getnonce_uuid.js';
 import DB from '../models/db.js';
+import Web3 from 'web3';
+const web3 = new Web3();
 const router = Router();
+
+const nonceStore = {};
 /**
  * Route to view user account record
  * @GET /account
@@ -149,4 +154,91 @@ router.post('/changepassword',
 			return res.serverError(err);
 		}
 	});
+
+/**
+ * Route to get nonce for wallet binding
+ * @GET /account/nonce
+ */
+router.get('/nonce', async (req, res) => {
+    try {
+        nonceStore[req.ip] = generateUUID();
+        return res.ok({ nonce: nonceStore[req.ip] });
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
+
+/**
+ * Route to bind wallet address with signature verification
+ * @POST /account/bindwallet
+ * @param {string} address - The wallet address to bind
+ * @param {string} signature - The signature of nonce
+ */
+router.post('/bindwallet', [
+    body('address').not().isEmpty(),
+    body('signature').not().isEmpty()
+], validateFormData, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { address, signature } = req.body;
+        const nonce = nonceStore[req.ip];
+
+        if (!nonce) {
+            return res.status(405).json({ message: '请先获取 nonce' });
+        }
+
+        const recoveredAddress = web3.eth.accounts.recover(nonce, signature);
+        if (recoveredAddress.toLowerCase() !== address.toLowerCase()) {
+            return res.status(405).json({ message: '签名验证失败' });
+        }
+
+        const user = await DB.User.findOne({ where: { id: userId } });
+        if (user.address) {
+            return res.status(405).json({ message: '该账户已绑定钱包地址' });
+        }
+
+        await DB.User.update({ address }, { where: { id: userId } });
+        delete nonceStore[req.ip];
+        return res.ok({ message: '钱包绑定成功' });
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
+
+/**
+ * Route to change wallet address with signature verification
+ * @POST /account/changewallet
+ * @param {string} address - The new wallet address
+ * @param {string} signature - The signature of nonce
+ */
+router.post('/changewallet', [
+    body('address').not().isEmpty(),
+    body('signature').not().isEmpty()
+], validateFormData, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { address, signature } = req.body;
+        const nonce = nonceStore[req.ip];
+
+        if (!nonce) {
+            return res.status(405).json({ message: '请先获取 nonce' });
+        }
+
+        const recoveredAddress = web3.eth.accounts.recover(nonce, signature);
+        if (recoveredAddress.toLowerCase() !== address.toLowerCase()) {
+            return res.status(405).json({ message: '签名验证失败' });
+        }
+
+        const user = await DB.User.findOne({ where: { id: userId } });
+        if (!user.address) {
+            return res.status(405).json({ message: '请先绑定钱包地址' });
+        }
+
+        await DB.User.update({ address }, { where: { id: userId } });
+        delete nonceStore[req.ip];
+        return res.ok({ message: '钱包地址更换成功' });
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
 export default router;

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 contract DataLogger {
     event DataLogged(
         uint indexed transactionId,
-        uint indexed phoneId,
+        uint indexed productId,
         uint buyerId,
         uint sellerId,
         string deviceType,
@@ -15,7 +15,7 @@ contract DataLogger {
     );
 
     struct TransactionData {
-        uint phoneId;
+        uint productId;
         uint buyerId;
         uint sellerId;
         string deviceType;
@@ -30,7 +30,7 @@ contract DataLogger {
     uint public transactionCount;
 
     function logTransaction(
-        uint _phoneId,
+        uint _productId,
         string memory _deviceType,
         string memory _brand,
         string memory _model,
@@ -42,7 +42,7 @@ contract DataLogger {
         transactionCount++;
 
         transactions[transactionCount] = TransactionData(
-            _phoneId,
+            _productId,
             _buyerId,
             _sellerId,
             _deviceType,
@@ -54,7 +54,7 @@ contract DataLogger {
 
         emit DataLogged(
             transactionCount,
-            _phoneId,
+            _productId,
             _buyerId,
             _sellerId,
             _deviceType,

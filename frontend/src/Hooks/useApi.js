@@ -3,7 +3,7 @@ import useLocalStore from './useLocalStore';
 
 function useApi() {
     const localStore = useLocalStore();
-    const baseURL = 'http://localhost:8060'; // 硬编码的基础 URL
+    const baseURL = 'http://localhost:8060'; 
 
     // If token exists set header
     let token = localStore.getToken();
@@ -24,6 +24,16 @@ function useApi() {
                 url: `${baseURL}${apiPath}`,
                 method: 'GET',
                 responseType: 'blob', // important for downloading files
+            });
+        },
+        upload(apiPath, formData) {
+            return axios({
+                url: `${baseURL}${apiPath}`,
+                method: 'POST',
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
         },
         post(apiPath, data) {

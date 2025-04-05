@@ -18,7 +18,9 @@ import Message from './message.js';
 import Order from './order.js'
 import AndroidTransaction from './android_transactions.js'
 import IphoneTransaction from './iphone_transactions.js';
-
+import Products from './products.js';
+import SoldProducts from './sold_products.js';
+import ChatContacts from './chat_contacts.js';
 
 const op = Sequelize.Op;
 const raw = Sequelize.literal;
@@ -62,7 +64,8 @@ function getOrderBy(req, sortField = null, sortType = 'desc') {
 	return null;
 }
 
-export default {
+
+const DB = {
 	sequelize,
 	op,
 	filterBy,
@@ -83,5 +86,16 @@ export default {
 	Message,
 	Order,
 	AndroidTransaction,
-	IphoneTransaction
-}
+	IphoneTransaction,
+	Products,
+	SoldProducts ,
+	ChatContacts
+};
+
+Object.keys(DB).forEach(modelName => {
+	if (DB[modelName] && DB[modelName].associate) {
+		DB[modelName].associate(DB);
+	}
+});
+
+export default DB;

@@ -13,13 +13,14 @@ import Transcations from './views/transcations/Transcations';
 import UserList from './views/Users/List';
 import UserLayout from './layout/UserLayout/UserLayout'
 import Phone from './views/Android/UserView'
-import Communcation from './views/Communcation/ChatUI'
+import Chat from './views/Chat/index'
 import Possessed from './views/Persion/Possessed'
-import SellPhone from './views/Helper/SellPhone'
+import SellPhone from './views/Market/Sell'
 import IphoneList from './views/IPhone/List'
 import Selling from './views/Persion/Selling'
 import BlockchainExplorer from './views/Blockchain-explorer/Blockchain-explorer-ui'
-
+import TokenPage from './views/Token/token';
+import ProjectView from './views/Products/view'
 const isAuthenticated = () => {
   // This function could potentially be replaced or augmented by a context or global state check
   return localStorage.getItem('isAuthenticated');
@@ -39,6 +40,7 @@ function App() {
           <Route index element={<UserList />} />
           <Route path="person" element={<Person />} />
           <Route path="userList" element={<UserList />} />
+          <Route path="token" element={<TokenPage />} />
           <Route path="transcations" element={<Transcations />} />
           <Route path="iphone" element={<IphoneList />} />
           <Route path="android">
@@ -54,6 +56,7 @@ function App() {
         <Route path="/user" element={<PrivateRoute><UserLayout /></PrivateRoute>}>
           <Route index element={<HomePage />} />
           <Route path="home" element={<HomePage />} />
+          <Route path="products/view/:pageid" element={<ProjectView />} />
           <Route path="android">
             <Route index element={<Phone />} />
             <Route path=":fieldName/:fieldValue" element={<AndroidList />} />
@@ -61,9 +64,10 @@ function App() {
             <Route path="view/:pageid" element={<AndroidView />} />
             <Route path="add" element={<AndroidAdd />} />
             <Route path="edit/:pageid" element={<AndroidEdit />} />
+    
           </Route>
           <Route path="person" element={<Person />} />
-          <Route path="communcation" element={<Communcation />} />
+          <Route path="Chat" element={<Chat />} />
           <Route path="possessed" element={<Possessed />} />
           <Route path='sellPhone' element={<SellPhone />} />
           <Route path='selling' element={<Selling />} />

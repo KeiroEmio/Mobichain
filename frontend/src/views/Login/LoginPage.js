@@ -2,7 +2,8 @@ import React, {useEffect, useState ,useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useApi from "../../Hooks/useApi";
 import useLocalStore from "../../Hooks/useLocalStore";
-import Web3 from "web3"; // 引入 Web3.js 库
+import Web3 from "web3"; 
+import EmailLoginForm from "./EmailLoginForm";
 
 function LoginPage() {
     const [loginError, setLoginError] = useState(null);
@@ -12,8 +13,9 @@ function LoginPage() {
     const localStore = useLocalStore();
     const navigate = useNavigate();
     const [nonce, setNonce] = useState(""); 
-     const isNonceFetched = useRef(false); 
-
+    const isNonceFetched = useRef(false); 
+    const [showEmailLogin, setShowEmailLogin] = useState(false);
+    
     // 请求后端生成一个随机的 nonce
     const getNonce = async () => {
         try {
@@ -85,8 +87,7 @@ function LoginPage() {
         }
     };
 
-    // 通过角色 ID 跳转页面
-    const booleanUser =  () => {
+    const booleanUser = () => {
         try {
             api.get('/api/account').then((response) => {
                 localStorage.setItem("userData", JSON.stringify(response.data));
@@ -101,21 +102,22 @@ function LoginPage() {
         }
     };
 
-
     useEffect(() => {
         if (!isNonceFetched.current) {
-            console.log("isNoncefetched is 1")
             getNonce();
             isNonceFetched.current = true;
         }
     }, []);
 
-    // 监听 userRoleId 的变化，触发页面跳转
-useEffect(() => {
-    if (userRoleId) {
-        booleanUser();
-    }
-}, [userRoleId]);
+    useEffect(() => {
+        if (userRoleId) {
+            booleanUser();
+        }
+    }, [userRoleId]);
+
+    const handleLoginSuccess = (roleId) => {
+        setUserRoleId(roleId);
+    };
 
     return (
         <div style={{
@@ -129,19 +131,57 @@ useEffect(() => {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
         }}>
-            <div style={{ width: '300px', padding: '20px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
-                <h1>钱包登录 - 二手交易平台</h1>
-                <button
-                    onClick={() => signNonce(nonce)}
-                    style={{ padding: '10px', color: 'white', backgroundColor: '#007bff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                    disabled={loading}
-                >
-                    登录（使用钱包）
-                </button>
-                {loginError && <p style={{ color: '#ff6b6b', textAlign: 'center' }}>登录错误: {loginError}</p>}
-                <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                    没有账号？<Link to="/register">注册</Link>
-                </div>
+            <div style={{
+                width: '300px',
+                padding: '20px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+            }}>
+                {!showEmailLogin ? (
+                    <>
+                        <h1>登录 - 二手交易平台</h1>
+                        <button
+                            onClick={() => signNonce(nonce)}
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                color: 'white',
+                                backgroundColor: '#007bff',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                marginBottom: '10px'
+                            }}
+                            disabled={loading}
+                        >
+                            使用钱包登录
+                        </button>
+                        <button
+                            onClick={() => setShowEmailLogin(true)}
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                color: '#007bff',
+                                backgroundColor: 'white',
+                                border: '1px solid #007bff',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            使用邮箱登录
+                        </button>
+                        {loginError && <p style={{ color: '#ff6b6b', textAlign: 'center' }}>登录错误: {loginError}</p>}
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                            没有账号？<Link to="/register">注册</Link>
+                        </div>
+                    </>
+                ) : (
+                    <EmailLoginForm
+                        onBack={() => setShowEmailLogin(false)}
+                        onLoginSuccess={handleLoginSuccess}
+                    />
+                )}
             </div>
         </div>
     );

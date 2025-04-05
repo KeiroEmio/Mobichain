@@ -6,6 +6,7 @@ export default {
 		secret: "f96e2f7a2a022824dc6d583c96710b02",
 		language: "english",
 		publicDir: "assets",
+		front:"http://localhost:3001"
 	},
 	auth: {
 		userTokenSecret: "e320ad4A-1ax%W@ee425YY6Q!!0-e3b3c7c094066c92f6db",
@@ -23,6 +24,13 @@ export default {
 		charset: "utf8",
 		recordlimit: 10,
 		ordertype: "DESC"
+	},
+	mongodb: {
+		url: "mongodb+srv://Chat1:3832414122.qzk@cluster0.xzlpp1z.mongodb.net/mobichain_chat?retryWrites=true&w=majority&appName=Cluster0",
+		options: {
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		}
 	},
 	mail: {
 		username:"",

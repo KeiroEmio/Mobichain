@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, Row, Col, message, Spin, Tabs, Input, Select } from 'antd';
-import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
+import { AppleOutlined, AndroidOutlined,ShoppingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../Hooks/useApi';
+import ProductList from '../Products/list';
 
 const ItemsGrid = () => {
     const { Search } = Input;
@@ -137,8 +138,7 @@ const ItemsGrid = () => {
     };
 
     const handSubmit = async () => {
-        console.log('filters:', filters);
-        console.log('currentKey:', currentKey);
+      
         const requestFilters = prepareFiltersForRequest();
         let response;
 
@@ -280,6 +280,11 @@ const ItemsGrid = () => {
                         </Row>
                     </>
                 )
+            },
+            {
+                key: '3',
+                label: <span><ShoppingOutlined /> 其他商品</span>,
+                children: <ProductList />
             }
         ]} />
     );

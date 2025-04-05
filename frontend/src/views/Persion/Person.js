@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Tabs, Form, Input, Button, Card, message } from 'antd'; // 导入 message 组件
-import useApi from '../../Hooks/useApi'; // 确保路径正确
+import { Tabs, Form, Input, Button, Card, message ,Space} from 'antd'; // 导入 message 组件
+import useApi from '../../Hooks/useApi'; 
+import { WalletOutlined } from '@ant-design/icons';
+import Web3 from 'web3';
 
 const { TabPane } = Tabs;
 
@@ -16,9 +18,24 @@ const cardStyle = {
 
 const PersonComponent = () => {
     const location = useLocation();
-    const accountData = location.state?.accountData;
-    const api = useApi(); // 使用API钩子
+    const api = useApi(); 
+    const [accountData, setAccountData] = useState(location.state?.accountData || {});
+    const fetchAccountData = async () => {
+        try {
+            const response = await api.get('/api/account');
+            if (response.status === 200) {
+                setAccountData(response.data);
+            }
+        } catch (error) {
+            message.error('获取账户信息失败');
+        }
+    };
 
+    // 组件挂载时获取最新数据
+    useEffect(() => {
+        fetchAccountData();
+    }, []);
+  
     const handleChangePassword = async (values) => {
         try {
             // 调用API的post方法，发送JSON格式的请求
@@ -40,16 +57,131 @@ const PersonComponent = () => {
         }
     };
 
+    const handleBindWallet = async () => {
+        try {
+            if (typeof window.ethereum === "undefined") {
+                return message.error('请安装 MetaMask 或其他以太坊钱包插件！');
+            }
+
+            const web3 = new Web3(window.ethereum);
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+
+            const accounts = await web3.eth.getAccounts();
+            if (accounts.length === 0) {
+                throw new Error("未找到钱包账户");
+            }
+
+            const address = accounts[0];
+            
+            // 获取 nonce
+            const nonceResponse = await api.get('/api/account/nonce');
+            const nonce = nonceResponse.data.nonce;
+
+            // 使用 web3.utils.utf8ToHex 转换 nonce
+            const signature = await window.ethereum.request({
+                method: "personal_sign",
+                params: [web3.utils.utf8ToHex(nonce), address],
+            });
+
+            const response = await api.post('/api/account/bindwallet', { 
+                address,
+                signature 
+            });
+
+            if (response.status === 200) {
+                message.success('钱包绑定成功！');
+                window.location.reload();
+            }
+        } catch (error) {
+            if (error.response?.status === 405) {
+                message.error(error.response.data.message || '绑定失败');
+            } else {
+                message.error('绑定钱包失败：' + (error.message || '未知错误'));
+            }
+        }
+    };
+
+    const handleChangeWallet = async () => {
+        try {
+            if (typeof window.ethereum === "undefined") {
+                return message.error('请安装 MetaMask 或其他以太坊钱包插件！');
+            }
+
+            const web3 = new Web3(window.ethereum);
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+
+            const accounts = await web3.eth.getAccounts();
+            if (accounts.length === 0) {
+                throw new Error("未找到钱包账户");
+            }
+
+            const newAddress = accounts[0];
+            
+            // 获取 nonce
+            const nonceResponse = await api.get('/api/account/nonce');
+            const nonce = nonceResponse.data.nonce;
+
+            // 使用 web3.utils.utf8ToHex 转换 nonce
+            const signature = await window.ethereum.request({
+                method: "personal_sign",
+                params: [web3.utils.utf8ToHex(nonce), newAddress],
+            });
+
+            const response = await api.post('/api/account/changewallet', { 
+                address: newAddress,
+                signature 
+            });
+
+            if (response.status === 200) {
+                message.success('钱包更换成功！');
+                window.location.reload();
+            }
+        } catch (error) {
+            if (error.response?.status === 405) {
+                message.error(error.response.data.message || '更换失败');
+            } else {
+                message.error('更换钱包失败：' + (error.message || '未知错误'));
+            }
+        }
+    };
+
     return (
         <div>
             <Tabs defaultActiveKey="1" style={{ paddingTop: '20px' }} centered>
                 <TabPane tab="个人信息" key="1">
                     <Card style={cardStyle}>
                         {Object.entries(accountData).map(([key, value]) => (
-                            <p key={key} style={{ margin: '10px 0', fontSize: '16px' }}>
-                                <strong style={{ color: '#555', marginRight: '10px' }}>{key}:</strong>
-                                <span style={{ color: '#777' }}>{value !== null ? value.toString() : 'N/A'}</span>
-                            </p>
+                            <div key={key} style={{ margin: '15px 0', padding: '10px', borderBottom: '1px solid #f0f0f0' }}>
+                                <Space align="baseline" style={{ width: '100%', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <strong style={{ color: '#333', fontSize: '16px' }}>{key}:</strong>
+                                        <span style={{ color: '#666', marginLeft: '10px' }}>
+                                            {value !== null ? value.toString() : 'N/A'}
+                                        </span>
+                                    </div>
+                                    {key === 'address' && (
+                                        value === null || value === 'N/A' ? (
+                                            <Button 
+                                                type="primary" 
+                                                icon={<WalletOutlined />}
+                                                onClick={handleBindWallet}
+                                                style={{ background: '#4CAF50' }}
+                                            >
+                                                绑定钱包
+                                            </Button>
+                                        ) : (
+                                            <Button 
+                                                type="primary" 
+                                                icon={<WalletOutlined />}
+                                                onClick={handleChangeWallet}
+                                                style={{ background: '#2196F3' }}
+                                            >
+                                                更换钱包
+                                            </Button>
+                                        )
+                                    )}
+                                </Space>
+                            </div>
                         ))}
                     </Card>
                 </TabPane>

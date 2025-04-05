@@ -24,7 +24,10 @@ import UsersMapController from './controllers/usersMap.js'
 import UpLoadController from './controllers/UpLoadController.js'
 import TransactionController from './controllers/jiaoyi.js'
 import GetAxiasController from './controllers/getAxias.js'
+import ProductsController from './controllers/products.js'
+import ChatController from './controllers/chat.js';
 import { Server } from "socket.io";
+import ws from './server/webSocket.js';
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
@@ -36,22 +39,21 @@ app.engine('html', ejs.renderFile);
 app.set('view engine', 'ejs');
 app.use(compression({ threshold: 0 }));
 app.use(cors());
+app.use('/assets/uploads/products', express.static('assets/uploads/products'));
 app.use(express.static(config.app.publicDir))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 extendExpressMiddleware(app);
 app.use(passportJwtLogin);
 app.use('/api/', authMiddleware);
+
 mongoose
-    .connect(process.env.ATLAS_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect(config.mongodb.url, config.mongodb.options)
     .then(() => {
-        console.log("DB Connetion Successfull");
+        console.log("MongoDB 连接成功");
     })
     .catch((err) => {
-        console.log(err.message);
+        console.log("MongoDB 连接错误:", err);
     });
 
 app.use('/api/auth', AuthController);
@@ -63,6 +65,7 @@ app.use('/api/permissions', PermissionsController);
 app.use('/api/roles', RolesController);
 // app.use('/api/transaction', TransactionController);
 app.use('/api/user', UserController);
+app.use('/api/products', ProductsController);
 app.use('/api/components_data', ComponentsDataController);
 app.use('/api/fileuploader', FileUploaderController);
 app.use('/api/s3uploader', S3UploaderController);
@@ -72,6 +75,7 @@ app.use('/api/usersMap', UsersMapController);
 app.use('/api/upLoad', UpLoadController);
 app.use('/api/transaction', TransactionController)
 app.use('/api/postEtherscanData', GetAxiasController)
+app.use('/api/chat', ChatController);
 app.get('*', function (req, res) {
     res.status(404).json("Page not found");
 });
@@ -84,23 +88,11 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3001",
+        origin: config.app.front,
         credentials: true,
     },
+    path: '/socket.io/', 
+    transports: ['websocket', 'polling'], // 支持 WebSocket 和轮询
 });
 
-global.onlineUsers = new Map();
-io.on("connection", (socket) => {
-    console.log('建立连接');
-    global.chatSocket = socket;
-    socket.on("add-user", (userId) => {
-        onlineUsers.set(userId, socket.id);
-    });
-
-    socket.on("send-msg", (data) => {
-        const sendUserSocket = onlineUsers.get(data.to);
-        if (sendUserSocket) {
-            socket.to(sendUserSocket).emit("msg-recieve", data.msg);
-        }
-    });
-});
+ws(io);

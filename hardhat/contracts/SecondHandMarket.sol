@@ -45,7 +45,6 @@ contract SecondHandMarket {
         phoneCount = 0;
     }
 
-    //卖手机，在网上交易
     function sellPhone(
         string memory _brand,
         string memory _model,

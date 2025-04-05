@@ -1,14 +1,13 @@
 const { Web3 } = require('web3');
 const fs = require('fs');
 const path = require('path');
-
+require('dotenv').config();
 // 配置Web3实例
 const web3 = new Web3(process.env.SPEOLIA_URL);
 console.log('SPEOLIA_URL:', process.env.SPEOLIA_URL);
-console.log("web3 version:", web3.version);
 
 // 导入合约的artifact
-const TransactionData = require('../artifacts/contracts/Transaction.sol/DataLogger.json');
+const TransactionData = require('../../artifacts/contracts/Transaction.sol/DataLogger.json');
 
 // 定义ABI和部署地址的路径
 const abiDir = path.join(__dirname, '../abi');
@@ -49,7 +48,6 @@ const deploy = async () => {
     console.log('Updated deployed addresses:', deployedAddresses);
 };
 
-// 执行部署并处理可能的错误
 deploy().catch(error => {
     console.error('An error occurred:', error);
 });

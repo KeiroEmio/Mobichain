@@ -7,6 +7,7 @@ class User extends BaseModel {
 			{
 
 				id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+				username: { type: Sequelize.STRING, defaultValue: 'default_name' },
 				email: { type: Sequelize.STRING, defaultValue: Sequelize.literal('DEFAULT') },
 				password: { type: Sequelize.STRING, defaultValue: Sequelize.literal('DEFAULT') },
 				address: { type: Sequelize.STRING, defaultValue: Sequelize.literal('DEFAULT') },
@@ -27,6 +28,7 @@ class User extends BaseModel {
 	static listFields() {
 		return [
 			'id',
+			'username',
 			'email',
 			'address',
 			'email_verified_at',
@@ -39,6 +41,7 @@ class User extends BaseModel {
 	static viewFields() {
 		return [
 			'id',
+			'username',
 			'email',
 			'address',
 			'email_verified_at',
@@ -51,6 +54,7 @@ class User extends BaseModel {
 	static accounteditFields() {
 		return [
 			'id',
+			'username',
 			'address',
 			'photo',
 			'token',
@@ -61,6 +65,7 @@ class User extends BaseModel {
 	static accountviewFields() {
 		return [
 			'id',
+			'username',
 			'email',
 			'address',
 			'email_verified_at',
@@ -73,6 +78,7 @@ class User extends BaseModel {
 	static editFields() {
 		return [
 			'id',
+			'username',
 			'address',
 			'photo',
 			'token',
@@ -86,6 +92,7 @@ class User extends BaseModel {
 			// Sequelize.literal("id LIKE :search"),
 			// Sequelize.literal("email LIKE :search"),
 			// Sequelize.literal("address LIKE :search"),
+			'username',
 			"email",
 			"address"
 		];

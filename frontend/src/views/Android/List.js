@@ -17,12 +17,12 @@ const AndroidList = () => {
 
     const fetchData = async () => {
         setLoading(true);
-        console.log('searchTerm:', searchTerm)
+       
         try {
             const queryString = `search=${encodeURIComponent(searchTerm)}&page=${currentPage}&limit=10`;
             const response = await api.get(`/api/android/get?${queryString}`);
             setData(response.data.data);
-            console.log('response.data.data:', response.data.data)
+            
             setTotalRecords(response.data.totalRecords);
             setTotalPages(response.data.totalPages);
         } catch (error) {
