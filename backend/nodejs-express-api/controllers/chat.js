@@ -87,6 +87,7 @@ router.get('/list/:userId', async (req, res) => {
         where: { id: otherParticipantId } 
       });
       
+      console.log('otherUser:', otherUser);
       // 获取未读消息数量
       const unreadCount = await ChatMessage.countDocuments({
         channelId: channel.channelId,
@@ -98,7 +99,7 @@ router.get('/list/:userId', async (req, res) => {
         channelId: channel.channelId,
         userId: otherParticipantId,
         username: otherUser ? otherUser.username : '未知用户',
-        avatar: otherUser ? otherUser.avatar : null,
+        photo: otherUser ? otherUser.photo : null,
         lastMessage: lastMessage ? lastMessage.content : '',
         lastTime: lastMessage ? lastMessage.timestamp : channel.createdAt,
         unreadCount: unreadCount,

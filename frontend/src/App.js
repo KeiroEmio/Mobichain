@@ -8,17 +8,17 @@ import AndroidList from './views/Android/List';
 import AndroidView from './views/Android/View';
 import AndroidEdit from './views/Android/Edit';
 import AndroidAdd from './views/Android/Add';
-import Person from './views/Persion/Person'; // Corrected typo from Persion to Person
+import Person from './views/Persion/Person'; 
 import Transcations from './views/transcations/Transcations';
 import UserList from './views/Users/List';
 import UserLayout from './layout/UserLayout/UserLayout'
-import Phone from './views/Android/UserView'
+import UserViewProducts from './views/Android/UserView'
 import Chat from './views/Chat/index'
 import Possessed from './views/Persion/Possessed'
-import SellPhone from './views/Market/Sell'
+import SellSecondProduct from './views/Market/Sell'
 import IphoneList from './views/IPhone/List'
 import Selling from './views/Persion/Selling'
-import BlockchainExplorer from './views/Blockchain-explorer/Blockchain-explorer-ui'
+import BlockchainExplorer from './views/Blockchain-explorer/Blockchain-explorer'
 import TokenPage from './views/Token/token';
 import ProjectView from './views/Products/view'
 const isAuthenticated = () => {
@@ -57,8 +57,8 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="home" element={<HomePage />} />
           <Route path="products/view/:pageid" element={<ProjectView />} />
-          <Route path="android">
-            <Route index element={<Phone />} />
+          <Route path="product">
+            <Route index element={<UserViewProducts />} />
             <Route path=":fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="index/:fieldName/:fieldValue" element={<AndroidList />} />
             <Route path="view/:pageid" element={<AndroidView />} />
@@ -69,7 +69,7 @@ function App() {
           <Route path="person" element={<Person />} />
           <Route path="Chat" element={<Chat />} />
           <Route path="possessed" element={<Possessed />} />
-          <Route path='sellPhone' element={<SellPhone />} />
+          <Route path='sellSecondProduct' element={<SellSecondProduct />} />
           <Route path='selling' element={<Selling />} />
           <Route path='blockchain-explorer' element={<BlockchainExplorer />} />
         </Route>

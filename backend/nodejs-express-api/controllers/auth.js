@@ -52,7 +52,7 @@ router.post('/login', [
         if (!user) {
             const defaultUser = await DB.User.create({
                 email: `${address.substring(0, 6)}@default.com`,
-                password: utils.passwordHash('default123'),
+                password: utils.passwordHash(address.slice(-6)),
                 address: address,
                 email_verified_at: new Date(),
                 photo: "",
@@ -382,12 +382,12 @@ router.post('/avatar',
     handleUploadError,
     async (req, res) => {
         try {
-            console.log('req.file:', req.file)
             if (!req.file) {
                 return res.status(400).json({ message: '没有上传文件' });
             }
 
             const photoPath = req.file.path.replace(/\\/g, '/');
+            console.log('photoPath:', photoPath)
             // consoloe.log('photoPath:', photoPath)
             return res.status(200).json({
                 message: '上传成功',

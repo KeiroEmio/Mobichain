@@ -95,7 +95,7 @@ const Possessed = () => {
     setSelectedProduct(null);
   };
 
-    const viewTraceability = async (product) => {
+        const viewTraceability = async (product) => {
     try {
       setIsLoading(true);
       console.log("溯源数据:", product); // 调试用
@@ -116,8 +116,8 @@ const Possessed = () => {
             txHash: productData.tx_hash || product.tx_hash,
             blockNumber: productData.block_number || product.block_number,
             price: `${productData.price || product.price} QZK`,
-              //链上索引id
-          productCount: productData.productCount
+            //链上索引id
+            productCount: productData.productCount
           }
         ]
       };
@@ -134,6 +134,14 @@ const Possessed = () => {
           blockNumber: product.block_number,
           price: `${product.price} QZK`,
         });
+        
+        // 添加商品收货记录（如果已确认收货）
+        if (product.receipt_time && product.receipt_tx) {
+          traceInfo.transactions.push({
+            type: '商品收货',
+            txHash: product.receipt_tx
+          });
+        }
       }
 
       setTraceData(traceInfo);
@@ -146,6 +154,8 @@ const Possessed = () => {
     }
   };
 
+  
+
   const handleConfirmReceipt = async (product) => {
       setIsLoading(true);
       try {
@@ -156,7 +166,7 @@ const Possessed = () => {
         const currentAccount = contractInstance.getAccount();
         const result = await contract.methods.confirmReceived(product.product.productCount)
           .send({ from: currentAccount });
-          console.log("确认收货结果:", result);
+          // console.log("确认收货结果:", result);
         const response = await api.post("/api/products/confirmReceipt", 
           {
             tx_hash: product.tx_hash,
@@ -442,35 +452,65 @@ const Possessed = () => {
               {traceData.transactions.map((tx, index) => (
                 <TraceItem key={index}>
                   <TraceItemIcon>
-                    {tx.type === '商品发布' ? <BlockOutlined /> : <ShoppingOutlined />}
+                    {tx.type === '商品发布' ? <BlockOutlined /> : 
+                     tx.type === '商品交易' ? <ShoppingOutlined /> : 
+                     <ShoppingOutlined />}
                   </TraceItemIcon>
                   <TraceItemContent>
                     <TraceItemHeader>
                       <TraceItemType>{tx.type}</TraceItemType>
-                      <TraceItemTime>{formatDateTime(tx.time)}</TraceItemTime>
+                      {tx.time && <TraceItemTime>{formatDateTime(tx.time)}</TraceItemTime>}
                     </TraceItemHeader>
-                    <TraceItemDetail>
-                        <span>{tx.type === '商品发布' ? '合约地址:' : '买方地址:'}</span>
-                        <Tooltip title={tx.to}>
-                          <BlockchainTag color="green" onClick={() => window.open(`https://sepolia.etherscan.io/address/${tx.to}`, '_blank')}>
-                            {formatAddress(tx.to)}
-                            <LinkOutlined style={{ marginLeft: 4 }} />
-                          </BlockchainTag>
-                        </Tooltip>
-                      </TraceItemDetail>
-                    <TraceItemDetails>
+                    {tx.type !== '商品收货' ? (
+                      <>
+                        <TraceItemDetail>
+                          <span>{tx.type === '商品发布' ? '合约地址:' : '买方地址:'}</span>
+                          <Tooltip title={tx.to}>
+                            <BlockchainTag color="green" onClick={() => window.open(`https://sepolia.etherscan.io/address/${tx.to}`, '_blank')}>
+                              {formatAddress(tx.to)}
+                              <LinkOutlined style={{ marginLeft: 4 }} />
+                            </BlockchainTag>
+                          </Tooltip>
+                        </TraceItemDetail>
+                        <TraceItemDetails>
+                          <TraceItemDetail>
+                            <span>{tx.type === '商品发布' ? '卖方地址:' : '卖方地址:'}</span>
+                            <Tooltip title={tx.from}>
+                              <BlockchainTag color="blue" onClick={() => window.open(`https://sepolia.etherscan.io/address/${tx.from}`, '_blank')}>
+                                {formatAddress(tx.from)}
+                                <LinkOutlined style={{ marginLeft: 4 }} />
+                              </BlockchainTag>
+                            </Tooltip>
+                          </TraceItemDetail>
+                          <TraceItemDetail>
+                            <span>交易哈希:</span>
+                            <Tooltip title={tx.txHash}>
+                              <BlockchainTag color="purple" onClick={() => window.open(`https://sepolia.etherscan.io/tx/${tx.txHash}`, '_blank')}>
+                                {formatAddress(tx.txHash)}
+                                <LinkOutlined style={{ marginLeft: 4 }} />
+                              </BlockchainTag>
+                            </Tooltip>
+                          </TraceItemDetail>
+                          <TraceItemDetail>
+                            <span>区块高度:</span>
+                            <Tooltip title={`区块 ${tx.blockNumber}`}>
+                              <BlockchainTag color="cyan" onClick={() => window.open(`https://sepolia.etherscan.io/block/${tx.blockNumber}`, '_blank')}>
+                                {tx.blockNumber}
+                                <LinkOutlined style={{ marginLeft: 4 }} />
+                              </BlockchainTag>
+                            </Tooltip>
+                          </TraceItemDetail>
+                          <TraceItemDetail>
+                            <span>价格:</span>
+                            <BlockchainTag color="red">
+                              {tx.price}
+                            </BlockchainTag>
+                          </TraceItemDetail>
+                        </TraceItemDetails>
+                      </>
+                    ) : (
                       <TraceItemDetail>
-                        <span>{tx.type === '商品发布' ? '卖方地址:' : '卖方地址:'}</span>
-                        <Tooltip title={tx.from}>
-                          <BlockchainTag color="blue" onClick={() => window.open(`https://sepolia.etherscan.io/address/${tx.from}`, '_blank')}>
-                            {formatAddress(tx.from)}
-                            <LinkOutlined style={{ marginLeft: 4 }} />
-                          </BlockchainTag>
-                        </Tooltip>
-                      </TraceItemDetail>
-                  
-                      <TraceItemDetail>
-                        <span>交易哈希:</span>
+                        <span>收货哈希:</span>
                         <Tooltip title={tx.txHash}>
                           <BlockchainTag color="purple" onClick={() => window.open(`https://sepolia.etherscan.io/tx/${tx.txHash}`, '_blank')}>
                             {formatAddress(tx.txHash)}
@@ -478,23 +518,7 @@ const Possessed = () => {
                           </BlockchainTag>
                         </Tooltip>
                       </TraceItemDetail>
-                      <TraceItemDetail>
-                        <span>区块高度:</span>
-                        <Tooltip title={`区块 ${tx.blockNumber}`}>
-                          <BlockchainTag color="cyan" onClick={() => window.open(`https://sepolia.etherscan.io/block/${tx.blockNumber}`, '_blank')}>
-                            {tx.blockNumber}
-                            <LinkOutlined style={{ marginLeft: 4 }} />
-                          </BlockchainTag>
-                        </Tooltip>
-                      </TraceItemDetail>
-                      {/* 添加价格显示 */}
-                      <TraceItemDetail>
-                        <span>价格:</span>
-                        <BlockchainTag color="red">
-                          {tx.price}
-                        </BlockchainTag>
-                      </TraceItemDetail>
-                    </TraceItemDetails>
+                    )}
                   </TraceItemContent>
                 </TraceItem>
               ))}

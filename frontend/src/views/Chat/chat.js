@@ -24,7 +24,7 @@ const Chat = () => {
   const [connected, setConnected] = useState(false);
   const socketRef = useRef(null);
 
-  // 初始化用户信息和WebSocket连接
+  // 组件加载时获取用户信息和聊天表
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
@@ -70,8 +70,8 @@ const Chat = () => {
       }
       return true;
     } catch (error) {
-      console.error('添加联系人失败:', error);
-      message.error('添加联系人失败');
+      // console.error('添加联系人失败:', error);
+      // message.error('添加联系人失败');
       return false;
     }
   };

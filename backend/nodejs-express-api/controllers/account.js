@@ -67,6 +67,82 @@ router.get(['/edit'], async (req, res) => {
 		return res.serverError(err);
 	}
 });
+
+/**
+ * Route to update user account information
+ * @POST /api/account/update
+ */
+router.post('/update', [
+	body('uid').optional().trim().not().isEmpty().withMessage('用户id不能为空'),
+	body('username').optional().trim().not().isEmpty().withMessage('用户名不能为空'),
+    body('email').optional().isEmail().withMessage('请输入有效的邮箱地址'),
+], validateFormData, async (req, res) => {
+    try {
+        const { uid ,username, email } = req.body;
+
+        const updateData = {};
+        if (username) updateData.username = username;
+        if (email) updateData.email = email;
+
+        if (email) {
+            const existingUser = await DB.User.findOne({
+                where: {
+                    email: email,
+                    id: { [DB.op.ne]: uid } 
+                }
+            });
+            if (existingUser) {
+                return res.status(400).json({ message: '该邮箱已被使用' });
+            }
+        }
+
+        // 更新用户信息
+        await DB.User.update(updateData, {
+            where: { id: uid }
+        });
+
+        // 返回更新后的用户信息
+        const updatedUser = await DB.User.findOne({
+            where: { id: uid },
+            attributes: ['id', 'username', 'email']
+        });
+
+        return res.ok(updatedUser);
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
+
+/**
+ * Route to update user avatar
+ * @POST /api/account/updateAvatar
+ */
+router.post('/updateAvatar', [
+    body('uid').not().isEmpty().withMessage('用户ID不能为空'),
+    body('photo').not().isEmpty().withMessage('头像路径不能为空')
+], validateFormData, async (req, res) => {
+    try {
+        const { uid, photo } = req.body;
+
+        // 更新用户头像
+        await DB.User.update(
+            { photo: photo },
+            { where: { id: uid } }
+        );
+
+        // 返回更新后的用户信息
+        const updatedUser = await DB.User.findOne({
+            where: { id: uid },
+            attributes: ['id', 'username', 'photo']
+        });
+
+        return res.ok(updatedUser);
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
+
+
 /**
  * Route to update  User record
  * @POST /user/edit/{recid}

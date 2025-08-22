@@ -9,7 +9,7 @@ const { Text } = Typography;
 
 const ChatWindow = ({ currentChat, messages, currentUserId, loading, onSendMessage, connected }) => {
   const messagesEndRef = useRef(null);
-
+  const userData  = JSON.parse(localStorage.getItem('userData'));
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };

@@ -39,6 +39,7 @@ class Products extends BaseModel {
                 tx_hash: { 
                     type: Sequelize.STRING(255) 
                 },
+                
                 block_number: { 
                     type: Sequelize.INTEGER 
                 },

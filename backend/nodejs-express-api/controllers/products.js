@@ -2,7 +2,7 @@ import express from 'express';
 import DB from '../models/db.js';
 import { recordNotFound, sendError, sendValid } from '../helpers/response_helper.js';
 
-const router = express.Router();
+const   router = express.Router();
 
 // 添加商品
 router.post('/add', async (req, res) => {
@@ -55,17 +55,35 @@ router.post('/add', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const address = req.query.address; 
-        
+        const limit = parseInt(req.query.limit) || 100;
+        const { address, search, minPrice, maxPrice } = req.query;
+
+        console.log("req.query:", req.query);
         const whereClause = {
-            is_sold: 0,  
+            is_sold: 0,
             ...(address ? {
                 owner_address: {
                     [DB.op.ne]: address 
                 }
             } : {})
         };
+
+        // 添加价格范围条件
+        if (minPrice || maxPrice) {
+            whereClause.price = {};
+            if (minPrice) whereClause.price[DB.op.gte] = minPrice;
+            if (maxPrice) whereClause.price[DB.op.lte] = maxPrice;
+        }
+
+        // 添加搜索条件（模糊搜索名称、品牌和类别）
+        if (search) {
+            console.log("search:", search);
+            whereClause[DB.op.or] = [
+                { name: { [DB.op.like]: `%${search}%` } },
+                { brand: { [DB.op.like]: `%${search}%` } },
+                { category: { [DB.op.like]: `%${search}%` } }
+            ];
+        }
         
         const products = await DB.Products.findAndCountAll({
             where: whereClause,

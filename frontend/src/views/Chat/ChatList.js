@@ -59,8 +59,8 @@ const ChatList = ({ chatList, currentChat, loading, onSelectChat, currentUserId 
                 avatar={
                   <Badge count={item.unreadCount || 0}>
                     <Avatar 
-                      src={item.avatar ? `http://localhost:8060/assets/uploads/avatars/${item.avatar}` : null} 
-                      icon={!item.avatar && <UserOutlined />}
+                      src={item.photo ? `http://localhost:8060/${item.photo}` : null} 
+                      icon={!item.photo && <UserOutlined />}
                       size={40}
                     />
                   </Badge>

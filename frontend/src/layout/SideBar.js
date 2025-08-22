@@ -28,12 +28,12 @@ const SideBar = () => {
                 <Menu.Item key="2" icon={<SendOutlined />}>
                     <Link to="/Transcations">交易记录</Link>
                 </Menu.Item>
-                <Menu.Item key="3" icon={<AppleOutlined />}>
+                {/* <Menu.Item key="3" icon={<AppleOutlined />}>
                     <Link to="/iphone">苹果</Link>
                 </Menu.Item>
                 <Menu.Item key="4" icon={<AndroidOutlined />}>
                     <Link to="/android">安卓</Link>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item key="5" icon={<SendOutlined />}>
                     <Link to="/blockchain-explorer">上链查询</Link>
                 </Menu.Item>

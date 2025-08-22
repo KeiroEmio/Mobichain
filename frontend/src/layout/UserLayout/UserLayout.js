@@ -17,8 +17,8 @@ const UserLayout = () => {
     const location = useLocation();
     const pathSnippets = location.pathname.split('/').filter(i => i);
     const [user, setUser] = useState({
-        name: 'Loading...', // 初始状态
-        avatar: '/path/to/default/avatar.png', // 初始头像
+        name: 'Loading...',
+        avatar: '/path/to/default/avatar.png', 
     });
     const localStore = useLocalStore();
 
@@ -40,10 +40,9 @@ const UserLayout = () => {
             }
         };
 
-        fetchUserData(); // 仅在组件首次加载时运行
-    }, []); // 空依赖项数组确保只运行一次
+        fetchUserData(); 
+    }, []);
 
-    // 登出逻辑
     const handleLogout = () => {
         try {
             localStorage.clear();
@@ -52,7 +51,7 @@ const UserLayout = () => {
         } catch (error) {
             console.error('Error clearing localStorage:', error);
         } finally {
-            navigate('/login'); // 导航到登录页面
+            navigate('/login'); 
         }
     };
 
@@ -70,7 +69,7 @@ const UserLayout = () => {
 
     const communcation = async () => {
         try {
-            navigate('/user/communcation'); // Navigate to /person page
+            navigate('/user/Chat'); // Navigate to /person page
         } catch (error) {
             console.error('Error fetching account data:', error);
         }
@@ -78,7 +77,7 @@ const UserLayout = () => {
 
     const explorer = async () => {
         try {
-            navigate('/user/blockchain-explorer'); // Navigate to /person page
+            navigate('/user/blockchain-explorer'); 
         } catch (error) {
             console.error('Error fetching account data:', error);
         }
@@ -93,7 +92,7 @@ const UserLayout = () => {
     }
     const handleSellClick = async () => {
         try {
-            navigate('/user/selling'); // Navigate to /person page
+            navigate('/user/selling'); 
         } catch (error) {
             console.error('Error fetching account data:', error);
         }
@@ -136,8 +135,8 @@ const UserLayout = () => {
     // 导航菜单项
     const navItems = [
         { key: 'home', label: <Link to="/user/home">主页面</Link> },
-        { key: 'phone', label: <Link to="/user/android">二手市场</Link> },
-        { key: 'selling', label: <Link to='/user/sellPhone'>售卖</Link> }
+        { key: 'product', label: <Link to="/user/product">二手市场</Link> },
+        { key: 'selling', label: <Link to='/user/sellSecondProduct'>售卖</Link> }
     ];
 
     const breadcrumbItems = pathSnippets.map((snippet, index) => {

@@ -54,7 +54,7 @@ const UserList = () => {
         <Dropdown
             overlay={
                 <Menu>
-                    <Menu.Item key="add" onClick={() => handleToken(record)}>充值或减少token</Menu.Item>
+                    {/* <Menu.Item key="add" onClick={() => handleToken(record)}>充值或减少token</Menu.Item> */}
                     <Menu.Item key="delete">删除</Menu.Item>
                 </Menu>
             }
@@ -68,8 +68,8 @@ const UserList = () => {
         { title: '用户id', dataIndex: 'id', key: 'id', sorter: true },
         { title: '邮箱', dataIndex: 'email', key: 'email', sorter: true },
         { title: '地址', dataIndex: 'address', key: 'address' },
-        { title: '创建时间', dataIndex: 'emailVerifiedAt', key: 'emailVerifiedAt' },
-        { title: 'token', dataIndex: 'token', key: 'token' },
+        // { title: '创建时间', dataIndex: 'emailVerifiedAt', key: 'emailVerifiedAt' },
+        // { title: 'token', dataIndex: 'token', key: 'token' },
         { title: '操作', key: 'actions', render: (text, record) => renderActionsMenu(record) }
     ];
 

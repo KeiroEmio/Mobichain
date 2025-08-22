@@ -5,7 +5,7 @@ import fs from 'fs';
 // 配置 multer 存储
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const uploadDir = 'assets/uploads/avatar';
+        const uploadDir = 'assets/uploads/products/avatar/';
         // 确保目录存在
         if (!fs.existsSync(uploadDir)){
             fs.mkdirSync(uploadDir, { recursive: true });

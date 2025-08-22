@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Spin, Select, Input } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, Row, Col, Spin, Select, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../Hooks/useApi';
 import useAuth from '../../Hooks/useAuth';
+import useSearch from '../../Hooks/useSearch';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -12,31 +13,38 @@ const ProductList = () => {
     const api = useApi();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [allProducts, setAllProducts] = useState([]);
     const [brands, setBrands] = useState([]);
-    const auth = useAuth();
-    const [filters, setFilters] = useState({
-        searchTerm: '',
-        priceRange: '',
-        brand: ''
-    });
-
+    const [categories, setCategories] = useState([]);
+    const { filters, handleFilterChange, resetFilters } = useSearch();
+    const searchInputRef = useRef(null);
+    const [reload, setReload] = useState(false);
     useEffect(() => {
         loadProducts();
-    }, []);
+    }, [reload]);
 
     const loadProducts = async () => {
         try {
             const address = JSON.parse(localStorage.getItem("userData")).address;
             setLoading(true);
-            const response = await api.get(`/api/products/list?address=${address}`);            if (response && response.data) {
-                // console.log('加载的商品数据:', response.data.data);
+            const response = await api.get(`/api/products/list?address=${address}`);
+            if (response && response.data) {
+
                 const productData = response.data.data.rows || [];
                 setProducts(productData);
+                setAllProducts(productData);
 
+                // 提取所有品牌和类别
+                const uniqueBrands = [...new Set(productData.map(item => item.brand).filter(Boolean))];
+                const uniqueCategories = [...new Set(productData.map(item => item.category).filter(Boolean))];
+
+                setBrands(uniqueBrands);
+                setCategories(uniqueCategories);
             }
         } catch (error) {
             console.error('加载商品失败:', error);
             setProducts([]);
+            setAllProducts([]);
         } finally {
             setLoading(false);
         }
@@ -46,37 +54,55 @@ const ProductList = () => {
         navigate(`/user/products/view/${item.id}`, { state: { rowData: item } });
     };
 
-    const handleFilterChange = (key, value) => {
-        setFilters(prev => ({
-            ...prev,
-            [key]: value
-        }));
+    const handleSearchClick = async () => {
+        const searchValue = searchInputRef.current.input.value;
+
+        await handleFilterChange('searchTerm', searchValue);
+
+        const address = JSON.parse(localStorage.getItem("userData")).address;
+        let queryParams = `address=${address}`;
+
+        if (searchValue) queryParams += `&search=${searchValue}`;
+
+        try {
+            setLoading(true);
+            const response = await api.get(`/api/products/list?${queryParams}`);
+
+            if (response && response.data) {
+                const productData = response.data.data.rows || [];
+                setProducts(productData);
+            } else {
+                setProducts([]);
+            }
+        } catch (error) {
+            console.error('搜索商品失败:', error);
+            setProducts([]);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleSearch = async () => {
-        console.log('搜索条件:', filters);
+    const handleReset = () => {
+        setReload(!reload);
     };
 
     const SearchAndFilter = () => (
         <div style={{ marginBottom: 16 }}>
-            <Select 
-                value={filters.priceRange} 
-                style={{ width: 180, marginRight: 16 }} 
-                onChange={value => handleFilterChange('priceRange', value)}
-            >
-                <Option value="">所有价格</Option>
-                <Option value="0~199">0 ~ 199</Option>
-                <Option value="200~499">200 ~ 499</Option>
-                <Option value="500~999">500 ~ 999</Option>
-                <Option value="1000~10000">1000 以上</Option>
-            </Select>
-            <Search
-                value={filters.searchTerm}
+            <Input
+                ref={searchInputRef}
                 placeholder="请输入搜索关键词"
-                onSearch={handleSearch}
-                onChange={e => handleFilterChange('searchTerm', e.target.value)}
-                style={{ width: 200, marginRight: 16 }}
+                style={{ width: 400, marginRight: 16 }}
+                onPressEnter={handleSearchClick}
+                allowClear
             />
+
+            <Button type="primary" onClick={handleSearchClick} style={{ marginRight: 8 }}>
+                搜索
+            </Button>
+
+            <Button onClick={handleReset}>
+                重置
+            </Button>
         </div>
     );
 
@@ -91,13 +117,13 @@ const ProductList = () => {
                                 hoverable
                                 style={{ width: '100%' }}
                                 cover={
-                                <img alt={item.name} 
-                                src={`http://localhost:8060/assets/uploads/products/${item.photo}`}
-                                style={{ height: '200px', objectFit: 'cover' }} />}
+                                    <img alt={item.name}
+                                        src={`http://localhost:8060/assets/uploads/products/${item.photo}`}
+                                        style={{ height: '200px', objectFit: 'cover' }} />}
                             >
                                 <Card.Meta
                                     title={`${item.name}`}
-                                    description={`${item.price} ETH | ${item.brand}`}
+                                    description={`${item.price} QZK | ${item.brand || '无品牌'} | ${item.category || '无类别'}`}
                                     style={{ textAlign: 'center' }}
                                 />
                             </Card>

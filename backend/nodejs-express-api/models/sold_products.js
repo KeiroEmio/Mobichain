@@ -97,7 +97,8 @@ class SoldProducts extends BaseModel {
             'block_number',
             'block_hash',
             'transaction_time',
-            'payment_status'
+            'payment_status',
+            'receipt_tx'
         ];
     }
 
@@ -113,7 +114,8 @@ class SoldProducts extends BaseModel {
             'block_number',
             'block_hash',
             'transaction_time',
-            'payment_status'
+            'payment_status',
+            'receipt_tx'
         ];
     }
 
@@ -128,7 +130,8 @@ class SoldProducts extends BaseModel {
             'block_number',
             'block_hash',
             'transaction_time',
-            'payment_status'
+            'payment_status',
+            'receipt_tx'
         ];
     }
 
@@ -137,7 +140,8 @@ class SoldProducts extends BaseModel {
             'uid', 
             'buyer_address',
             'seller_address',
-            'tx_hash'
+            'tx_hash',
+            'receipt_tx'
         ];
     }
 }

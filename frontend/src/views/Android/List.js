@@ -1,30 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table, Input, Pagination } from 'antd';
 import useApi from '../../Hooks/useApi';
+import usePagination from '../../Hooks/usePagination';
 
 const AndroidList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [totalRecords, setTotalRecords] = useState(0);
+    // const [totalRecords, setTotalRecords] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const api = useApi();
+
+    const {
+        currentPage,
+        totalRecords,
+        pageSize,
+        setTotalRecords,
+        handlePageChange,
+    } = usePagination(10);
 
     useEffect(() => {
         fetchData();
     }, [currentPage, searchTerm]);
 
-    const fetchData = async () => {
+     const fetchData = async () => {
         setLoading(true);
-       
         try {
-            const queryString = `search=${encodeURIComponent(searchTerm)}&page=${currentPage}&limit=10`;
+            const queryString = `search=${encodeURIComponent(searchTerm)}&page=${currentPage}&limit=${pageSize}`;
             const response = await api.get(`/api/android/get?${queryString}`);
             setData(response.data.data);
-            
             setTotalRecords(response.data.totalRecords);
-            setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching Android records:', error);
         } finally {
@@ -32,16 +38,6 @@ const AndroidList = () => {
         }
     };
 
-    const handleSearch = value => {
-        setSearchTerm(value);
-        setCurrentPage(1); // Reset to first page for new search
-    };
-
-    const handlePageChange = page => {
-        console.log('page:', page)
-        // setSearchTerm('')
-        setCurrentPage(page);
-    };
 
     const columns = [
         {
@@ -49,9 +45,6 @@ const AndroidList = () => {
             dataIndex: 'imagePath',
             key: 'imagePath',
             render: (text, record) => {
-                // 打印每条记录的 imagePath
-                console.log(`imagePath for ${record.brand}:`, record.imagePath);
-                // 返回渲染的图片元素
                 return (
                     <img src={`/asserts/images/${record.imagePath}`} alt="Product" style={{ height: '200px', objectFit: 'cover' }} />
                 );
@@ -67,12 +60,6 @@ const AndroidList = () => {
 
     return (
         <div>
-            <Input.Search
-                placeholder="搜索关于手机内容..."
-                onSearch={handleSearch}
-                style={{ margin: '0 0 20px 0', width: 300 }}
-                enterButton
-            />
             <Table
                 columns={columns}
                 dataSource={data}
@@ -83,8 +70,8 @@ const AndroidList = () => {
             <Pagination
                 current={currentPage}
                 total={totalRecords}
+                pageSize={pageSize}
                 onChange={handlePageChange}
-                pageSize={10}
                 showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             />
         </div>

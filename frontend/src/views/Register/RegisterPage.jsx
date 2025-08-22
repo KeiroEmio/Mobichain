@@ -53,7 +53,7 @@ function RegisterPage() {
                 photoData.append('photo', image);
                 try {
                     const uploadResponse = await api.upload("/api/auth/avatar", photoData);
-                    console.log('头像上传成功:', uploadResponse);
+                    // console.log('头像上传成功:', uploadResponse);
                     if (uploadResponse.data && uploadResponse.data.photo) {
                         photoPath = uploadResponse.data.photo;
                     }
